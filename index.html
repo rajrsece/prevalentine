@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ta">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mayuriya ❤️ Rajendraprasath</title>
+    <link href="https://fonts.googleapis.com/css2?family=Meera+Inimai&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+
+        to {
+          opacity: 0.85;
+          transform: translateY(0);
+        }
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Meera Inimai", "Poppins", sans-serif;
+        background: linear-gradient(-45deg,
+            #ff4d6d,
+            #ff9a9e,
+            #fbc2eb,
+            #ffd6e8);
+        background-size: 500% 500%;
+        animation: bgFlow 14s ease infinite;
+        overflow: hidden;
+      }
+
+      @keyframes bgFlow {
+        0% {
+          background-position: 0% 50%;
+        }
+
+        50% {
+          background-position: 100% 50%;
+        }
+
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* Floating hearts */
+      .heart {
+        position: fixed;
+        bottom: -20px;
+        animation: floatUp linear forwards;
+        pointer-events: none;
+        opacity: 0.8;
+      }
+
+      @keyframes floatUp {
+        from {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+
+        to {
+          transform: translateY(-120vh) scale(1.6);
+          opacity: 0;
+        }
+      }
+
+      /* Card */
+      .card {
+        width: min(92%, 420px);
+        padding: 42px 28px 48px;
+        border-radius: 34px;
+        text-align: center;
+        background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.65),
+            rgba(255, 182, 193, 0.4));
+        backdrop-filter: blur(24px);
+        box-shadow: 0 40px 110px rgba(255, 77, 109, 0.4);
+        position: relative;
+      }
+
+      .emoji {
+        font-size: 64px;
+        margin-bottom: 12px;
+        animation: heartbeat 1.8s infinite;
+      }
+
+      @keyframes heartbeat {
+
+        0%,
+        100% {
+          transform: scale(1);
+        }
+
+        50% {
+          transform: scale(1.15);
+        }
+      }
+
+      h2 {
+        font-size: 22px;
+        color: #5a0c2f;
+        margin-bottom: 26px;
+        line-height: 1.6;
+      }
+
+      /* Buttons */
+      .buttons {
+        position: relative;
+        height: 160px;
+      }
+
+      button {
+        position: absolute;
+        padding: 14px 40px;
+        border-radius: 40px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.18);
+      }
+
+      #yes {
+        position: absolute;
+        left: 50%;
+        top: 50px;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #ff2f68, #ff7aa2);
+        color: #fff;
+        z-index: 2;
+      }
+
+      #no {
+        position: absolute;
+        left: 50%;
+        top: 120px;
+        /* 👈 clearly below YES */
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.95);
+        color: #777;
+        z-index: 1;
+        transition:
+          left 0.45s cubic-bezier(.25, .8, .25, 1),
+          top 0.45s cubic-bezier(.25, .8, .25, 1),
+          transform 0.15s ease;
+      }
+
+      .hint {
+        margin-top: 22px;
+        font-size: 13px;
+        color: #6b2b45;
+        font-style: italic;
+      }
+
+      /* Modal */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(10px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal {
+        background: linear-gradient(135deg, #ff9a9e, #fbc2eb);
+        border-radius: 32px;
+        padding: 40px 28px;
+        text-align: center;
+        animation: modalIn 0.6s ease;
+      }
+
+      @keyframes modalIn {
+        from {
+          opacity: 0;
+          transform: scale(0.7);
+        }
+
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="emoji">🐱❤️</div>
+      <h3> Hey Mayuriya <br>
+      </h3>
+      <br>
+      <h2>Will you be my valentine?</h2>
+      <div class="buttons" id="btnArea">
+        <button id="yes" aria-label="Say Yes to Raj">YES 💖</button>
+        <button id="no">NO 🙈</button>
+      </div>
+      <div class="hint" id="hintText"> No ah? 😌 Un smile already YES solludichu ❤️ </div>
+    </div>
+    <div class="modal-overlay" id="modal">
+      <div class="modal">
+        <h3>Mayu 💕</h3>
+        <br>
+        <p> Idhu just Valentine mattum illa… <br>
+          <br> namma rendu peroda <br>
+          <b>future-oda beginning</b> 💍 <br>
+          <br> Un kooda <br> ellaa naalum, ellaa nilaiyilum irukka <br> naan ready ❤️ <br>
+          <br> Sikiram una namba engagement-la <br> sirichu paakurathukku <br>I'm waiting😉 <br>
+          <br> With lots of love <br>
+          <b>💖 Raj 💖</b>
+          <br>
+          <span id="phoneNumber" style="
+        display:none;
+        font-size:14px;
+        margin-top:8px;
+        opacity:0.85;
+      "> 💚 <a href="https://wa.me/919655392857" target="_blank" style="color:#1b5e20; text-decoration:none; font-weight:500;"> Chat with me on WhatsApp </a>
+          </span>
+        </p>
+      </div>
+    </div>
+    <!-- AUDIO -->
+    <audio id="bgMusic" preload="auto" loop>
+      <source src="https://cooccc.etacloud.org/api/v1/download?sig=BhPk0XpL8spKup9kDTMeiJA%2BoMZ89cr%2Fvf%2BaWiOCJTpJTBwQWa4IxZhiJetMXQRVjQmTsWplBfBVW0PkzV2sXi9HltWTvwz7reUgc0Xd1dmNEnpiyq27soiGR3zRJFPO6RxE%2Fk3my02UOGgl%2BIxveZ2DIcn43NxcspwQRQ3MWwn4XfkGk8EKCI4KItzKGCnFvif4KE%2B54CWvObATlROWW7TLHwcf8hmY5Prw3a4XOw3DlCVhqxUhFGRHM7I2bvEtmPGGKyuflr5DuDW3iTAxn6sueXeoClyNgLyANvrvEJjuWPKHRXWrUJtmftUp8xsB750bhx84f%2F9ArnAso%2Bu5fA%3D%3D&s=3&v=EGLX2jYS8bQ&f=mp3" type="audio/mpeg">
+    </audio>
+    <script>
+      const noBtn = document.getElementById("no");
+      const yesBtn = document.getElementById("yes");
+      const area = document.getElementById("btnArea");
+      const modal = document.getElementById("modal");
+      const hintText = document.getElementById("hintText");
+      const bgMusic = document.getElementById("bgMusic");
+      let audioStarted = false;
+      const teasingLines = ["No ah? 😌 Un smile already YES solludichu ❤️", "Oda paathaalum kadhal pudichurum 😘", "Indha NO romba shy… apdiye una maari 😍", "No solla vidathu.. little pidivaadham 💕", "Escape illa Mayuriya 😌 destiny strong!", "Nerla paarthum… No solli sirikkathaa 💗", "No-nu sonnadhum un eyes YES solluthu 😌", "Kadhal letter la… oru NO-kum value illa 😍", "Nee YES solrathukku ready ah? 😳💘", "Unkuda Naanum sernthaal… forever start 💍✨", "Indha NO-vum romba cute-aa irukku 😄", "Sirichitta… game over dhaan 😉❤️"];
+      //hintText.style.transform = "rotate(-2deg)";
+      noBtn.addEventListener("mouseenter", () => {
+        document.querySelector(".emoji").textContent = "🙈💖";
+      });
+      yesBtn.addEventListener("mouseenter", () => {
+        document.querySelector(".emoji").textContent = "🐱💍";
+      });
+      yesBtn.addEventListener("click", () => {
+        startMusic();
+        confetti({
+          particleCount: 300,
+          spread: 140,
+          origin: {
+            y: 0.6
+          }
+        });
+        setTimeout(() => {
+          modal.style.display = "flex";
+          // Show phone number after modal opens
+          const phone = document.getElementById("phoneNumber");
+          phone.style.display = "inline-block";
+          phone.style.animation = "fadeIn 1s ease";
+        }, 500);
+      });
+
+      function startMusic() {
+        if (!audioStarted) {
+          bgMusic.volume = 0.3;
+          bgMusic.play().catch(() => {});
+          audioStarted = true;
+        }
+      }
+
+      function moveNoButton() {
+        startMusic();
+        const areaRect = area.getBoundingClientRect();
+        const noRect = noBtn.getBoundingClientRect();
+        const x = Math.random() * (areaRect.width - noRect.width);
+        const y = Math.random() * (areaRect.height - noRect.height);
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+        hintText.textContent = teasingLines[Math.floor(Math.random() * teasingLines.length)];
+      }
+      noBtn.addEventListener("mouseenter", moveNoButton);
+      noBtn.addEventListener("click", moveNoButton);
+      yesBtn.addEventListener("click", () => {
+        startMusic();
+        confetti({
+          particleCount: 250,
+          spread: 140,
+          origin: {
+            y: 0.6
+          }
+        });
+        setTimeout(() => modal.style.display = "flex", 400);
+      });
+      /* Floating hearts */
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = Math.random() > 0.5 ? "❤️" : "💗";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 22 + 14 + "px";
+        heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 8000);
+      }
+      setInterval(createHeart, 380);
+    </script>
+  </body>
+</html>
